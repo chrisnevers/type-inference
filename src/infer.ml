@@ -62,5 +62,6 @@ let rec ti env exp =
     (compose_subs s1 s2, t2)
 
 let infer env e =
+  count := - 1;
   let subs, ty = ti env e in
   apply_mono subs ty
