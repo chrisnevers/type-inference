@@ -44,7 +44,7 @@ exp:
   | exp MUL exp                     { Binop ($1, Mul, $3) }
   | exp DIV exp                     { Binop ($1, Div, $3) }
   | exp AND exp                     { Binop ($1, And, $3) }
-  | exp OR exp                     { Binop ($1, Or, $3) }
+  | exp OR exp                      { Binop ($1, Or, $3) }
   | LET ID EQ exp IN exp            { Let ($2, $4, $6) }
   | FUN ID ARROW exp                { Abs ($2, $4) }
   | LPAREN exp RPAREN               { $2 }
