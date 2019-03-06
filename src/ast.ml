@@ -1,3 +1,20 @@
+type op =
+  | Add
+  | Sub
+  | Mul
+  | Div
+  | And
+  | Or
+
+let str_op o =
+  match o with
+  | Add -> "+"
+  | Sub -> "-"
+  | Mul -> "*"
+  | Div -> "/"
+  | And -> "&&"
+  | Or -> "||"
+
 type lit =
   | Int of int
   | Bool of bool
@@ -13,6 +30,7 @@ type exp =
   | App of exp * exp
   | Abs of string * exp
   | Let of string * exp * exp
+  | Binop of exp * op * exp
 
 let rec str_exp s =
   match s with
@@ -21,6 +39,7 @@ let rec str_exp s =
   | App (fn, arg) -> str_exp fn ^ " " ^ str_exp arg
   | Abs (arg, e) -> "\\ " ^ arg ^ " -> " ^ str_exp e
   | Let (id, e, b) -> "let " ^ id ^ " = " ^ str_exp e ^ " in " ^ str_exp b
+  | Binop (l, o, r) -> str_exp l ^ " " ^ str_op o ^ " " ^ str_exp r
 
 type mono_ty =
   | TVar of string

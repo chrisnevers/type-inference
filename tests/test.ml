@@ -31,6 +31,40 @@ let test_let = fun () ->
   let actual = infer StringMap.empty exp in
   assert_equal TInt actual
 
+let test_add = fun () ->
+  let exp = Abs ("y", Binop (Var "y", Add, Lit (Int 5))) in
+  let actual = infer StringMap.empty exp in
+  let expected = TFun (TInt, TInt) in
+  assert_equal expected actual
+
+let test_sub = fun () ->
+  let exp = Abs ("y", Binop (Var "y", Sub, Lit (Int 5))) in
+  let actual = infer StringMap.empty exp in
+  let expected = TFun (TInt, TInt) in
+  assert_equal expected actual
+
+let test_mul = fun () ->
+  let exp = Abs ("y", Binop (Var "y", Mul, Lit (Int 5))) in
+  let actual = infer StringMap.empty exp in
+  let expected = TFun (TInt, TInt) in
+  assert_equal expected actual
+
+let test_div = fun () ->
+  let exp = Abs ("y", Binop (Var "y", Div, Lit (Int 5))) in
+  let actual = infer StringMap.empty exp in
+  let expected = TFun (TInt, TInt) in
+  assert_equal expected actual
+
+let test_and = fun () ->
+  let exp = Binop (Lit (Bool true), And, Lit (Bool false)) in
+  let actual = infer StringMap.empty exp in
+  assert_equal TBool actual
+
+let test_or = fun () ->
+  let exp = Binop (Lit (Bool true), Or, Lit (Bool false)) in
+  let actual = infer StringMap.empty exp in
+  assert_equal TBool actual
+
 let suite =
   "Tests" >:::
   [
@@ -39,6 +73,12 @@ let suite =
     "Lambda" >:: test_abs;
     "Application" >:: test_app;
     "Let" >:: test_let;
+    "Binop Add" >:: test_add;
+    "Binop Sub" >:: test_sub;
+    "Binop Mul" >:: test_mul;
+    "Binop Div" >:: test_div;
+    "Binop And" >:: test_and;
+    "Binop Or" >:: test_or;
   ]
 
 let _ = run_test_tt_main suite

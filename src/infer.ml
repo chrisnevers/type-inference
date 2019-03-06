@@ -60,6 +60,17 @@ let rec ti env exp =
     let env'' = add id ty env' in
     let s2, t2 = ti (apply_env s1 env'') b in
     (compose_subs s1 s2, t2)
+  | Binop (l, op, r) ->
+    let s1, t1 = ti env l in
+    let s2, t2 = ti env r in
+    let subs = compose_subs s1 s2 in
+    match op with
+    | Add | Sub | Mul | Div ->
+      let s3 = compose_subs (mgu t1 TInt) (mgu t2 TInt) in
+      (compose_subs subs s3, TInt)
+    | And | Or ->
+      let s3 = compose_subs (mgu t1 TBool) (mgu t2 TBool) in
+      (compose_subs subs s3, TBool)
 
 let infer env e =
   count := - 1;
